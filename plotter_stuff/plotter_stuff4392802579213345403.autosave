@@ -119,48 +119,17 @@ void setup() {
       line_clipped((xMax + xMin) / 2, yMin,(xMax + xMin) / 2, yMax);
     }}
 
-
 }
 
-int xCounter = 0;
-int yCounter = 0;
-float x;
-float y;
 void draw() {
-
     strokeWeight(2); 
     stroke(0);
     noFill();
     // Draw circle in the middle of the plotter 
-    float x0 = xMin;
-    float y0 = yMin;
+    float x = VERTICAL_CENTER;
+    float y = HORIZONTAL_CENTER;
     
-    float R = 600;
-    float dR = R/6;
-    float gridStep = 0.9*R; 
-    y0 = y0 + gridStep*yCounter; 
-    if (y0 > yMax) {
-      yCounter = 0; 
-      y0 = yMin;  //<>// //<>// //<>//
-      xCounter = xCounter +1; //<>//
-      x = x0 + xCounter*gridStep; //<>// //<>// //<>//
-    } //<>//
-    if (x0 > xMax) {  //<>// //<>// //<>// //<>//
-      xCounter = 0; //<>// //<>//
-      println(x0); //<>//
-      println("resetting x0"); //<>// //<>//
-      x0 = xMin; //<>//
-    } //<>// //<>//
- //<>//
-    yCounter = yCounter + 1; //<>// //<>//
-    y = y0; //<>//
-    float angle = 0;
-
-    if (x < xMax && x > xMin && y < yMax && y > yMin) {
-      //plotter_circle(x, y, 1000);
-      drawSpider(x,y , angle, dR);
-
-    }
+    drawSpiders(xMin, yMin);
 
     // get value for screen cleaner from cp5 slider "screenCleaner"
     boolean isClearingScreenEachFrame = false;
@@ -170,18 +139,21 @@ void draw() {
   
 }
 
-
+int xCounter = 0;
+int yCounter = 0;
+float x;
+float y;
 void drawSpiders(float x0, float y0) {
     float R = 600;
   float dR = R/6;
-  float gridStep = 0.9*R; 
-  y0 = y0 + gridStep*yCounter; 
-  if (y0 > yMax) {
-    yCounter = 0; 
+  float gridStep = 0.9*R;  //<>// //<>// //<>//
+  y0 = y0 + gridStep*yCounter;
+  if (y0 > yMax) { //<>// //<>// //<>//
+    yCounter = 0;
     y0 = yMin;  //<>// //<>// //<>//
-    xCounter = xCounter +1; //<>//
+    xCounter = xCounter +1;
     x = x0 + xCounter*gridStep; //<>// //<>// //<>//
-  } //<>//
+  }
   if (x0 > xMax) {  //<>// //<>// //<>//
     xCounter = 0;
     println(x0);
@@ -198,17 +170,22 @@ void drawSpiders(float x0, float y0) {
     sign = -1;
   }
   float yBump = sign*noise(x,y)*R/(3*PI);
+  yBump=0;
   
   sign = 1;
   if (noise(x) > 0.5) {
     sign = -1;
   }
   float xBump = sign*noise(y,x)*R/PI/4;
+  xBump = 0;
   if (x < xMax && x > xMin && y < yMax && y > yMin) {
   //plotter_circle(x, y, 1000);
   float angle = map(x, xMin, xMax, 0 , 100*PI);
+  pushMatrix();
+  rotate(angle);
 
   drawSpider(x+xBump,y + yBump, angle, dR);
+  popMatrix();
 
   }
 }

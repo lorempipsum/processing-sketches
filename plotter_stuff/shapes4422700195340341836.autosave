@@ -150,55 +150,26 @@ void draw_circle_with_line(float x, float y, float radius) {
   drawLine(x0, y0, x1, y1, up);
 }
 
-void plotter_ellipse(float x, float y, float rX, float rY, float angle) {
-  float _x = map(x, 0, A4_MAX_WIDTH, 0, width);
-  float _y = map(y, 0, A4_MAX_HEIGHT, 0, height);
-  float _rX = map(rX, 0, A4_MAX_WIDTH, 0, width);
-  float _rY = map(rY, 0, A4_MAX_HEIGHT, 0, height);
-
-  int movementDelay = 8000; // I think I measured this, roughly?
-  int upDelay = 20;
-
-  int totalDelay = movementDelay + upDelay;
-  xPen = x;
-  yPen = y;
-  pushMatrix();
-  // translate(_y, _x);
-  rotate(angle);
-  ellipse(_y,_x,2*_rX,2*_rY);
-  popMatrix();
-  // HPGL for an ellipse:
-  // EA x,y,rX,rY
-  if (x > xMin && x < xMax && y > yMin && y < yMax) {
-    if (PLOTTING_ENABLED) {
-      plotter.write("RO" + angle + ";"); // Rotate plotter area
-      plotter.write("PU" + x + "," + y + ";"); //Position pen
-      plotter.write("EA" + x + "," + y + "," + rX + "," + rY + ";"); //Draw circle
-      plotter.write("PU;"); //Lift pen
-      plotter.write("RO" + 0 + ";"); // Rotate plotter area back to 0 
-      delay(totalDelay);
-    }
-  }
-}
-
 void plotter_circle(float x, float y, float radius) {
   float _x = map(x, 0, A4_MAX_WIDTH, 0, width);
   float _y = map(y, 0, A4_MAX_HEIGHT, 0, height);
   float _r = map(radius, 0, A4_MAX_WIDTH, 0, width);
+  println(_r);
 
-  int movementDelay = 8000; // I think I measured this, roughly?
+  int movementDelay = getMovementDelay(x, y);
   int upDelay = 20;
 
   int totalDelay = movementDelay + upDelay;
   xPen = x;
   yPen = y;
 
-  point(_y, _x);
+  point(x, y);
   // draw circle
-  ellipse(_y,_x,2*_r,2*_r);
+  ellipse(_x-_r/3.14,_y,_r,_r);
   
 
   if (x > xMin && x < xMax && y > yMin && y < yMax) {
+    point(_y, _x);
     if (PLOTTING_ENABLED) {
       plotter.write("PU" + x + "," + y + ";"); //Position pen
       plotter.write("CI" + radius + ";"); //Draw circle
@@ -206,14 +177,6 @@ void plotter_circle(float x, float y, float radius) {
       delay(totalDelay);
     }
   }
-}
-
-void plotter_circle_droplet(float x, float y, float dR, float maxRadius) {
-  for (int i = 0; i<int(maxRadius/dR);i+=1) {
-    float noiseValue = noise(x,y,i);
-    float radius = noiseValue*dR*i;
-    plotter_circle(x,y,radius);
-}
 }
 
 void draw_offset_circle_with_line() {

@@ -127,7 +127,6 @@ int yCounter = 0;
 float x;
 float y;
 void draw() {
-
     strokeWeight(2); 
     stroke(0);
     noFill();
@@ -145,21 +144,23 @@ void draw() {
       xCounter = xCounter +1; //<>//
       x = x0 + xCounter*gridStep; //<>// //<>// //<>//
     } //<>//
-    if (x0 > xMax) {  //<>// //<>// //<>// //<>//
-      xCounter = 0; //<>// //<>//
-      println(x0); //<>//
-      println("resetting x0"); //<>// //<>//
-      x0 = xMin; //<>//
-    } //<>// //<>//
- //<>//
-    yCounter = yCounter + 1; //<>// //<>//
-    y = y0; //<>//
-    float angle = 0;
+    if (x0 > xMax) {  //<>// //<>// //<>//
+      xCounter = 0;
+      println(x0);
+      println("resetting x0");
+      x0 = xMin;
+    }
+
+    yCounter = yCounter + 1;
+    y = y0;
+    float angle = map(x, xMin, xMax, 0 , 0.1*frameCount);
+
+
 
     if (x < xMax && x > xMin && y < yMax && y > yMin) {
       //plotter_circle(x, y, 1000);
       drawSpider(x,y , angle, dR);
-
+  
     }
 
     // get value for screen cleaner from cp5 slider "screenCleaner"

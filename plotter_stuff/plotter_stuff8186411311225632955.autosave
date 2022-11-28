@@ -1,0 +1,47 @@
+
+
+//Label
+String dateTime = day() + " / " + month() + " / " + year() + " " + hour() + " : " + minute() + " : " + second() + " - ";
+String label = dateTime + "draw_cube_spinner";
+
+
+//Plotter dimensions
+float xMin = 600;
+float yMin = 800;
+float xMax = 10300 - 300;
+float yMax = 8400 - 600;
+float plotAreaWidth = (float)(yMax - yMin);
+float plotAreaHeight = (float)(xMax - xMin);
+float aspectRatio = (float)(plotAreaHeight / plotAreaWidth);
+
+float VERTICAL_CENTER = (xMax + xMin) / 2;
+float HORIZONTAL_CENTER = (yMax + yMin) / 2;
+
+float A4_MAX_HEIGHT = 10887;
+float A4_MAX_WIDTH = 8467;
+float xPen = xMin;
+float yPen = yMin;
+
+float TIME_Y = 5000;
+float TIME_X = 5000;
+
+float COLUMN_GAP = 1;
+float ROW_GAP = 1;
+float OBJECT_HEIGHT = 100;
+int fps = 60;
+
+void draw() {
+    strokeWeight(3); 
+    stroke(0);
+    // Draw circle in the middle of the plotter 
+    float x = VERTICAL_CENTER;
+    float y = HORIZONTAL_CENTER;
+    float radius = 3000;
+    plotter_circle(x, y, radius);
+    // get value for screen cleaner from cp5 slider "screenCleaner"
+    boolean isClearingScreenEachFrame = false;
+    if (isClearingScreenEachFrame == true) {
+      background(200);
+    }
+  
+}
